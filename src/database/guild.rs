@@ -12,11 +12,10 @@ pub struct Guild {
 
 impl Guild {
     pub async fn fetch(pool: &PgPool, discord_guild_id: i64) -> Result<Option<Self>, Error> {
-        let guild = sqlx::query_as!(
-            Guild,
+        let guild = sqlx::query_as::<_, Guild>(
             "SELECT discord_guild_id, channel_id, name, created_at FROM guilds WHERE discord_guild_id = $1",
-            discord_guild_id
         )
+        .bind(discord_guild_id)
         .fetch_optional(pool)
         .await?;
 
@@ -29,13 +28,13 @@ impl Guild {
         channel_id: i64,
         name: Option<&str>,
     ) -> Result<Self, Error> {
-        let guild = sqlx::query_as!(
-            Guild,
+        let guild = sqlx::query_as::<_, Guild>(
+
             "INSERT INTO guilds (discord_guild_id, channel_id, name) VALUES ($1, $2, $3) RETURNING discord_guild_id, channel_id, name, created_at",
-            discord_guild_id,
-            channel_id,
-            name
         )
+        .bind(discord_guild_id)
+        .bind(channel_id)
+        .bind(name)
         .fetch_one(pool)
         .await?;
 
@@ -47,12 +46,11 @@ impl Guild {
         discord_guild_id: i64,
         new_name: Option<&str>,
     ) -> Result<Self, Error> {
-        let guild = sqlx::query_as!(
-            Guild,
+        let guild = sqlx::query_as::<_, Guild>(
             "UPDATE guilds SET name = $1 WHERE discord_guild_id = $2 RETURNING discord_guild_id, channel_id, name, created_at",
-            new_name,
-            discord_guild_id
         )
+        .bind(new_name)
+        .bind(discord_guild_id)
         .fetch_one(pool)
         .await?;
 
@@ -64,12 +62,11 @@ impl Guild {
         discord_guild_id: i64,
         channel_id: i64,
     ) -> Result<Self, Error> {
-        let guild = sqlx::query_as!(
-            Guild,
+        let guild = sqlx::query_as::<_, Guild>(
             "UPDATE guilds SET channel_id = $1 WHERE discord_guild_id = $2 RETURNING discord_guild_id, channel_id, name, created_at",
-            channel_id,
-            discord_guild_id
         )
+        .bind(channel_id)
+        .bind(discord_guild_id)
         .fetch_one(pool)
         .await?;
 
@@ -77,13 +74,11 @@ impl Guild {
     }
 
     pub async fn delete(pool: &PgPool, discord_guild_id: i64) -> Result<u64, Error> {
-        let deleted_count = sqlx::query!(
-            "DELETE FROM guilds WHERE discord_guild_id = $1",
-            discord_guild_id
-        )
-        .execute(pool)
-        .await?
-        .rows_affected();
+        let deleted_count = sqlx::query("DELETE FROM guilds WHERE discord_guild_id = $1")
+            .bind(discord_guild_id)
+            .execute(pool)
+            .await?
+            .rows_affected();
 
         Ok(deleted_count) // TODO update GuildUser
     }

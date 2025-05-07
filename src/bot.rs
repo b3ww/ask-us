@@ -6,10 +6,14 @@ async fn get_db_pool() -> Result<PgPool, sqlx::Error> {
     let database_url =
         std::env::var("DATABASE_URL").expect("DATABASE_URL doit être défini dans le fichier .env");
 
-    PgPoolOptions::new()
+    let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&database_url)
-        .await
+        .await?;
+
+    sqlx::migrate!().run(&pool).await?;
+
+    Ok(pool)
 }
 
 pub struct Bot {
