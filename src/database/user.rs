@@ -35,6 +35,7 @@ impl User {
         Ok(user)
     }
 
+    #[allow(dead_code)]
     pub async fn update_username(
         pool: &PgPool,
         discord_user_id: i64,

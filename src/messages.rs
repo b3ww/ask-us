@@ -1,11 +1,9 @@
 use crate::{
     bot::Bot,
-    database::{Answer, Question},
+    // database::Question,
     error,
 };
 use serenity::all::*;
-
-use std::collections::HashMap;
 
 impl Bot {
     pub async fn send_success_embed(
@@ -77,14 +75,14 @@ impl Bot {
     //     }
     // }
 
-    pub async fn send_basic_question(
-        self,
-        ctx: &Context,
-        question: Question,
-        guild: Guild,
-    ) -> error::Result<()> {
-        // let answers = Answer::fetch_by_question_and_guild(&self.pool, question.question_id, guild.id.into());
+    //     pub async fn send_basic_question(
+    //         self,
+    //         ctx: &Context,
+    //         question: Question,
+    //         guild: Guild,
+    //     ) -> error::Result<()> {
+    //         // let answers = Answer::fetch_by_question_and_guild(&self.pool, question.question_id, guild.id.into());
 
-        Ok(())
-    }
+    //         Ok(())
+    //     }
 }

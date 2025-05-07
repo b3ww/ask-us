@@ -16,15 +16,15 @@ impl GuildUser {
         discord_guild_id: i64,
         discord_user_id: i64,
     ) -> Result<Option<GuildUser>, Error> {
-        Ok(sqlx::query_as::<_, GuildUser>(
+        sqlx::query_as::<_, GuildUser>(
             "SELECT g.discord_guild_id, g.discord_user_id
-                 FROM guild_users g
-                 WHERE g.discord_guild_id = $1 AND g.discord_user_id = $2",
+                  FROM guild_users g
+                  WHERE g.discord_guild_id = $1 AND g.discord_user_id = $2",
         )
         .bind(discord_guild_id)
         .bind(discord_user_id)
         .fetch_optional(pool)
-        .await?)
+        .await
     }
 
     pub async fn register(
@@ -58,6 +58,7 @@ impl GuildUser {
         Ok(deleted_count)
     }
 
+    #[allow(dead_code)]
     pub async fn get_guilds_for_user(
         pool: &PgPool,
         discord_user_id: i64,

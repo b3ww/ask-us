@@ -137,7 +137,7 @@ impl Bot {
             database::User::register(&self.pool, command.user.id.into(), &command.user.name)
                 .await?;
             Self::send_success_embed(
-                &ctx,
+                ctx,
                 &command,
                 "🎉 User Registered!",
                 format!("Successfully registered **{}**!", command.user.name),
@@ -146,7 +146,7 @@ impl Bot {
             .await?;
         } else {
             Self::send_error_embed(
-                &ctx,
+                ctx,
                 &command,
                 "⚠️ Already Registered",
                 &format!("**{}** is already registered!", command.user.name),
@@ -168,7 +168,7 @@ impl Bot {
         {
             database::User::delete(&self.pool, command.user.id.into()).await?;
             Self::send_success_embed(
-                &ctx,
+                ctx,
                 &command,
                 "🗑️ User Unregistered!",
                 format!(
@@ -180,7 +180,7 @@ impl Bot {
             .await?;
         } else {
             Self::send_error_embed(
-                &ctx,
+                ctx,
                 &command,
                 "⚠️ Not Registered",
                 &format!("**{}** is not registered yet.", command.user.name),
@@ -309,7 +309,7 @@ impl Bot {
         if let Some(question) = option {
             match &question.value {
                 CommandDataOptionValue::String(text) => {
-                    let _ = database::Question::register(&self.pool, &text, Some(guild_id.into()))
+                    let _ = database::Question::register(&self.pool, text, Some(guild_id.into()))
                         .await?;
                     Ok(())
                 }

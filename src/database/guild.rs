@@ -73,6 +73,7 @@ impl Guild {
         Ok(guild)
     }
 
+    #[allow(dead_code)]
     pub async fn delete(pool: &PgPool, discord_guild_id: i64) -> Result<u64, Error> {
         let deleted_count = sqlx::query("DELETE FROM guilds WHERE discord_guild_id = $1")
             .bind(discord_guild_id)

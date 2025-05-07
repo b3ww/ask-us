@@ -4,7 +4,7 @@ mod guild_user;
 mod question;
 mod user;
 
-pub use answer::Answer;
+// pub use answer::Answer;
 pub use guild::Guild;
 pub use guild_user::GuildUser;
 pub use question::Question;
