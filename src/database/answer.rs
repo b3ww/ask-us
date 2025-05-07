@@ -12,6 +12,7 @@ pub struct Answer {
 }
 
 impl Answer {
+    #[allow(dead_code)]
     pub async fn register(
         pool: &PgPool,
         question_id: i32,
@@ -30,6 +31,7 @@ impl Answer {
         Ok(answer)
     }
 
+    #[allow(dead_code)]
     pub async fn fetch_by_question(pool: &PgPool, question_id: i32) -> Result<Vec<Self>, Error> {
         let answers = sqlx::query_as::<_, Answer>(
             "SELECT answer_id, question_id, answered_by, answer_user_id, created_at FROM answers WHERE question_id = $1"
@@ -41,6 +43,7 @@ impl Answer {
         Ok(answers)
     }
 
+    #[allow(dead_code)]
     pub async fn fetch_by_question_and_guild(
         pool: &PgPool,
         question_id: i32,

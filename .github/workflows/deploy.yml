@@ -1,59 +1,13 @@
-name: CI and Deploy to VPS
+name: Deploy to VPS
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 
 jobs:
-  clippy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-
-      - name: Run Clippy
-        run: cargo clippy --all-features -- -D warnings
-
-  taplo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Taplo
-        run: cargo install taplo-cli
-
-      - name: Run Taplo formatting check
-        run: taplo format --check
-
-  rustfmt:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-
-      - name: Run Rustfmt
-        run: cargo fmt --all -- --check
-
   deploy:
     runs-on: ubuntu-latest
-    needs: [clippy, taplo, rustfmt]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

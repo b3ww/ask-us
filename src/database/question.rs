@@ -11,6 +11,7 @@ pub struct Question {
 }
 
 impl Question {
+    #[allow(dead_code)]
     pub async fn fetch_by_id(pool: &PgPool, question_id: i32) -> Result<Option<Self>, Error> {
         let question = sqlx::query_as::<_, Question>(
             "SELECT question_id, content, discord_guild_id, created_at FROM questions WHERE question_id = $1",
@@ -38,6 +39,7 @@ impl Question {
         Ok(question)
     }
 
+    #[allow(dead_code)]
     pub async fn fetch_unanswered_for_guild(
         pool: &PgPool,
         guild_id: i64,

@@ -36,13 +36,11 @@ impl EventHandler for Bot {
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         let _ = self.hanlde_interactions(ctx, interaction).await;
-        ()
     }
 
     async fn guild_create(&self, ctx: Context, guild: Guild, is_new: Option<bool>) {
-        match self.guild_setup_channel(ctx, guild, is_new).await {
-            Err(e) => error!("{}", e.to_string()),
-            _ => {}
+        if let Err(e) = self.guild_setup_channel(ctx, guild, is_new).await {
+            error!("{}", e.to_string())
         }
     }
 
