@@ -13,7 +13,13 @@ name = "askus-v2"
 path = "src/main.rs"
 
 [dependencies]
-sqlx = { version = "0.7", features = ["postgres", "runtime-tokio", "macros", "uuid", "chrono"] }
+sqlx = { version = "0.7", features = [
+  "postgres",
+  "runtime-tokio",
+  "macros",
+  "uuid",
+  "chrono",
+] }
 chrono = "*"
 serde = { version = "1.0", features = ["derive"] }
 dotenv = "0.15"
